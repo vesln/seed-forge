@@ -1,4 +1,4 @@
-UI       = tdd
+UI = tdd
 REPORTER = dot
 
 TESTS = test/*test.js
