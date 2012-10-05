@@ -25,16 +25,23 @@ var define = require('../').define;
  * `build` builds a valid model object, but not
  * persisted yet.
  *
- * @type {Function}
+ * @type {function}
  */
 var build = require('../').build;
 
 /**
  * The factory creator.
  *
- * @type {Function}
+ * @type {function}
  */
 var factory = require('../').factory;
+
+/**
+ * Factory attributes reader.
+ *
+ * @type {function}
+ */
+var attributes = require('../').attributes;
 
 /**
  * Example User model.
@@ -50,10 +57,13 @@ define(User)
 describe('Seed Forge', function () {
   it('can create from factories', function (done) {
     factory('User', function (user) {
-      user.get('name').should.eql('Name');
-      user.get('age').should.eql(33);
+      user.fetch(function () {
+        user.get('_id').should.be.not.null;
+        user.get('name').should.eql('Name');
+        user.get('age').should.eql(33);
 
-      done();
+        done();
+      });
     });
   });
 
@@ -64,7 +74,11 @@ describe('Seed Forge', function () {
     user.get('age').should.eql(33);
   });
 
+  it('can return valid attributes', function () {
+    var user = attributes('User');
+    user.should.eql({ name: 'Name', age: 33 });
+  });
+
   xit('can override the default attributes');
   xit('can create multiple factories at once');
-  xit('can return valid attributes');
 });
