@@ -44,6 +44,13 @@ var factory = require('../').factory;
 var attributes = require('../').attributes;
 
 /**
+ * Invalid model.
+ *
+ * @type {Function}
+ */
+var Invalid = require('./support/models').Invalid;
+
+/**
  * Example User model.
  *
  * @type {Function}
@@ -67,6 +74,8 @@ define('Admin', User)
   .extend('User')
   .set('admin', true)
 
+define(Invalid);
+
 describe('Seed Forge', function () {
   describe('overriding default attributes', function () {
     it('can be done when building', function () {
@@ -84,17 +93,27 @@ describe('Seed Forge', function () {
     });
   });
 
-  it('can create from factories', function (done) {
-    factory('User', function (user) {
-      user.fetch(function () {
-        user.get('_id').should.be.not.null;
-        user.get('eyes').should.eql({ left: 'blue', right: 'green' });
-        user.get('name').should.eq('Name');
-        user.get('age').should.eql(33);
-        user.get('url').should.eql('http://example.com');
+  describe('creating a factory', function() {
+    it('can save the factory', function (done) {
+      factory('User', function (user) {
+        user.fetch(function () {
+          user.get('_id').should.be.not.null;
+          user.get('eyes').should.eql({ left: 'blue', right: 'green' });
+          user.get('name').should.eq('Name');
+          user.get('age').should.eql(33);
+          user.get('url').should.eql('http://example.com');
 
-        done();
+          done();
+        });
       });
+    });
+
+    it('throws an exception if one occures by saving', function() {
+      var fn = function () {
+        factory('Invalid', function (invalid) {});
+      };
+
+      fn.should.throw();
     });
   });
 
@@ -116,13 +135,13 @@ describe('Seed Forge', function () {
 
   it('can handle sequences', function () {
     var first = attributes('User')
-      , second = attributes('User')
-      , regexp = /example[0-9]+@example.com/;
+    , second = attributes('User')
+    , regexp = /example[0-9]+@example.com/;
 
-    first.email.should.not.eq(second.email);
+  first.email.should.not.eq(second.email);
 
-    first.email.should.match(regexp);
-    second.email.should.match(regexp);
+  first.email.should.match(regexp);
+  second.email.should.match(regexp);
   });
 
   it('supports inheritance', function () {
@@ -151,5 +170,3 @@ describe('Seed Forge', function () {
     });
   });
 });
-
-xit('raises error on create');

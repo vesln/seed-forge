@@ -1,8 +1,16 @@
+/*!
+ * Seed Forge - factories for Seed.
+ *
+ * Veselin Todorov <hi@vesln.com>
+ * MIT License
+ */
+
 /**
  * Seed.
  *
  * @type {Object}
  */
+
 var seed = require('seed');
 
 /**
@@ -10,6 +18,7 @@ var seed = require('seed');
  *
  * @type {Object}
  */
+
 var store = new seed.MemoryStore();
 
 /**
@@ -17,6 +26,7 @@ var store = new seed.MemoryStore();
  *
  * @type {Function}
  */
+
 module.exports.User = seed.Model.extend('User', {
   store: store,
   name: String,
@@ -29,3 +39,12 @@ module.exports.User = seed.Model.extend('User', {
   email: String,
   admin: Boolean,
 });
+
+
+/**
+ * Invalid model (without a storage).
+ *
+ * @type {Function}
+ */
+
+module.exports.Invalid = seed.Model.extend('Invalid', {});
