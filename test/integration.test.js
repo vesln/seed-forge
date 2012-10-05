@@ -51,13 +51,21 @@ var attributes = require('../').attributes;
 var User = require('./support/models').User;
 
 define(User)
-  .field('name', 'Name')
-  .field('url', function() {
+  .set('name', 'Name')
+  .set('url', function() {
     return 'http://example.com';
   })
-  .field('eyes.left', 'blue')
-  .field('eyes.right', 'green')
-  .field('age', 33);
+  .set('eyes.left', 'blue')
+  .set('eyes.right', 'green')
+  .set('email', function (n) {
+    return 'example' + n + '@example.com'
+  })
+  .set('age', 33)
+  .set('admin', false);
+
+define('Admin', User)
+  .extend('User')
+  .set('admin', true)
 
 describe('Seed Forge', function () {
   describe('overriding default attributes', function () {
@@ -100,15 +108,36 @@ describe('Seed Forge', function () {
   it('can return valid attributes', function () {
     var attrs = attributes('User');
 
-    attrs.should.eql({
-      name: 'Name',
-      age: 33,
-      url: 'http://example.com',
-      eyes: { left: 'blue', right: 'green' }
-    });
+    attrs.name.should.eq('Name');
+    attrs.age.should.eq(33);
+    attrs.url.should.eq('http://example.com');
+    attrs.eyes.should.eql({ left: 'blue', right: 'green' });
+  });
+
+  it('can handle sequences', function() {
+    var first = attributes('User')
+      , second = attributes('User')
+      , regexp = /example[0-9]+@example.com/;
+
+    first.email.should.not.eq(second.email);
+
+    first.email.should.match(regexp);
+    second.email.should.match(regexp);
+  });
+
+  it('supports inheritance', function() {
+    var user = build('User');
+    var admin = build('Admin');
+
+    user.get('eyes').should.eql(admin.get('eyes'));
+    user.get('name').should.eq(admin.get('name'));
+    user.get('age').should.eq(admin.get('age'));
+
+    user.get('admin').should.eq(false);
+    admin.get('admin').should.eq(true);
+
+    user.get('email').should.not.eq(admin.get('emai'));
   });
 
   xit('can create multiple factories at once');
-  xit('seq');
-  xit('extending a factory');
 });

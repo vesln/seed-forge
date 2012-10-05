@@ -25,5 +25,7 @@ module.exports.User = seed.Model.extend('User', {
     left: String,
     right: String,
   },
-  age: Number
+  age: Number,
+  email: String,
+  admin: Boolean,
 });
