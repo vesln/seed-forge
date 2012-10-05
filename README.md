@@ -2,6 +2,5 @@
 
 - Readme
 - Examples
-- License
 - Push to GitHub
 - Release
