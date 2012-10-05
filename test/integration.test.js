@@ -52,7 +52,7 @@ var User = require('./support/models').User;
 
 define(User)
   .set('name', 'Name')
-  .set('url', function() {
+  .set('url', function () {
     return 'http://example.com';
   })
   .set('eyes.left', 'blue')
@@ -114,7 +114,7 @@ describe('Seed Forge', function () {
     attrs.eyes.should.eql({ left: 'blue', right: 'green' });
   });
 
-  it('can handle sequences', function() {
+  it('can handle sequences', function () {
     var first = attributes('User')
       , second = attributes('User')
       , regexp = /example[0-9]+@example.com/;
@@ -125,7 +125,7 @@ describe('Seed Forge', function () {
     second.email.should.match(regexp);
   });
 
-  it('supports inheritance', function() {
+  it('supports inheritance', function () {
     var user = build('User');
     var admin = build('Admin');
 
@@ -139,5 +139,15 @@ describe('Seed Forge', function () {
     user.get('email').should.not.eq(admin.get('emai'));
   });
 
-  xit('can create multiple factories at once');
+  it('can create multiple factories at once', function (done) {
+    list('User', 10, function (users) {
+      users.length.should.eq(10);
+
+      users.map(function (user) {
+        user.get('_id').should.be.ok;
+      });
+
+      done();
+    });
+  });
 });
