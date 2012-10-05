@@ -151,3 +151,5 @@ describe('Seed Forge', function () {
     });
   });
 });
+
+xit('raises error on create');
