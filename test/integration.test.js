@@ -6,13 +6,6 @@
  */
 
 /**
- * Seed.
- *
- * @type {Object}
- */
-var seed = require('seed');
-
-/**
  * With `list` one can create multiple
  * factories at once.
  *
@@ -43,8 +36,27 @@ var build = require('../').build;
  */
 var factory = require('../').factory;
 
-describe('Seed Forge', function() {
-  xit('can create factories');
+/**
+ * Example User model.
+ *
+ * @type {Function}
+ */
+var User = require('./support/models').User;
+
+define(User)
+  .field('name', 'Name')
+  .field('age', 33);
+
+describe('Seed Forge', function () {
+  it('can create from factories', function (done) {
+    factory('User', function (user) {
+      user.get('name').should.eql('Name');
+      user.get('age').should.eql(33);
+
+      done();
+    });
+  });
+
   xit('can override the default attributes');
   xit('can create multiple factories at once');
   xit('can return valid attributes');
