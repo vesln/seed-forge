@@ -6,7 +6,7 @@
 var seed = require('seed');
 
 /**
- * Memory Store.
+ * Memory Storage.
  *
  * @type {Object}
  */

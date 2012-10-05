@@ -57,6 +57,13 @@ describe('Seed Forge', function () {
     });
   });
 
+  it('can return valid object, but not persisted', function () {
+    var user = build('User');
+
+    user.get('name').should.eql('Name');
+    user.get('age').should.eql(33);
+  });
+
   xit('can override the default attributes');
   xit('can create multiple factories at once');
   xit('can return valid attributes');
