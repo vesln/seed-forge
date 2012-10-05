@@ -1,0 +1,28 @@
+{
+  "author": "Veselin Todorov <hi@vesln.com>",
+  "name": "seed-forge",
+  "description": "",
+  "keywords": [ "factories", "fixtures", "factory", "fixture", "seed" ],
+  "license": "MIT",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vesln/seed-forge"
+  },
+  "bugs": {
+    "url": "https://github.com/vesln/seed-forge/issues"
+  },
+  "main": "./lib/seed-forge.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "engines": {
+    "node": ">= 0.6.0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+      "chai": "*"
+    , "mocha": "*"
+    , "seed": "*"
+  }
+}
