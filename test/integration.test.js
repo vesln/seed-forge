@@ -55,11 +55,27 @@ define(User)
   .field('age', 33);
 
 describe('Seed Forge', function () {
+  describe('override default attributes', function () {
+    it('can be done when building', function () {
+      var user = build('User', { age: 44 });
+      user.get('age').should.eq(44);
+    });
+
+    it('can be done when creating', function (done) {
+      factory('User', { age: 44 }, function (user) {
+        user.fetch(function () {
+          user.get('age').should.eq(44);
+          done();
+        });
+      });
+    });
+  });
+
   it('can create from factories', function (done) {
     factory('User', function (user) {
       user.fetch(function () {
         user.get('_id').should.be.not.null;
-        user.get('name').should.eql('Name');
+        user.get('name').should.eq('Name');
         user.get('age').should.eql(33);
 
         done();
@@ -70,8 +86,8 @@ describe('Seed Forge', function () {
   it('can return valid object, but not persisted', function () {
     var user = build('User');
 
-    user.get('name').should.eql('Name');
-    user.get('age').should.eql(33);
+    user.get('name').should.eq('Name');
+    user.get('age').should.eq(33);
   });
 
   it('can return valid attributes', function () {
@@ -79,6 +95,7 @@ describe('Seed Forge', function () {
     user.should.eql({ name: 'Name', age: 33 });
   });
 
-  xit('can override the default attributes');
   xit('can create multiple factories at once');
+  xit('seq');
+  xit('creating with a function');
 });
