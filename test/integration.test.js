@@ -55,6 +55,8 @@ define(User)
   .field('url', function() {
     return 'http://example.com';
   })
+  .field('eyes.left', 'blue')
+  .field('eyes.right', 'green')
   .field('age', 33);
 
 describe('Seed Forge', function () {
@@ -78,6 +80,7 @@ describe('Seed Forge', function () {
     factory('User', function (user) {
       user.fetch(function () {
         user.get('_id').should.be.not.null;
+        user.get('eyes').should.eql({ left: 'blue', right: 'green' });
         user.get('name').should.eq('Name');
         user.get('age').should.eql(33);
         user.get('url').should.eql('http://example.com');
@@ -95,12 +98,17 @@ describe('Seed Forge', function () {
   });
 
   it('can return valid attributes', function () {
-    var user = attributes('User');
-    user.should.eql({ name: 'Name', age: 33, url: 'http://example.com' });
+    var attrs = attributes('User');
+
+    attrs.should.eql({
+      name: 'Name',
+      age: 33,
+      url: 'http://example.com',
+      eyes: { left: 'blue', right: 'green' }
+    });
   });
 
   xit('can create multiple factories at once');
   xit('seq');
   xit('extending a factory');
-  xit('nested attributes');
 });

@@ -20,5 +20,10 @@ var store = new seed.MemoryStore();
 module.exports.User = seed.Model.extend('User', {
   store: store,
   name: String,
+  url: String,
+  eyes: {
+    left: String,
+    right: String,
+  },
   age: Number
 });
