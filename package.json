@@ -1,10 +1,20 @@
 {
-  "author": "Veselin Todorov <hi@vesln.com>",
   "name": "seed-forge",
-  "description": "",
-  "keywords": [ "factories", "fixtures", "factory", "fixture", "seed" ],
+  "homepage": "https://github.com/vesln/seed-forge",
+  "description": "Factories for Seed",
+  "keywords": [
+    "factories",
+    "fixtures",
+    "factory",
+    "fixture",
+    "seed"
+  ],
+  "author": {
+    "name": "Veselin Todorov",
+    "email": "hi@vesln.com"
+  },
   "license": "MIT",
-  "version": "0.0.2",
+  "version": "0.1.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/vesln/seed-forge"
@@ -20,12 +30,13 @@
     "node": ">= 0.6.0"
   },
   "dependencies": {
-      "super": "0.2.x"
-    , "filtr": "0.3.x"
+    "super": "0.2.x",
+    "filtr": "0.3.x",
+    "cyclop": "~0.1.0"
   },
   "devDependencies": {
-      "chai": "*"
-    , "mocha": "*"
-    , "seed": "*"
+    "chai": "*",
+    "mocha": "*",
+    "seed": "*"
   }
 }

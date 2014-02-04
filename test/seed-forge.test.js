@@ -158,6 +158,29 @@ describe('Seed Forge', function () {
     user.get('email').should.not.eq(admin.get('emai'));
   });
 
+  it('supports before and after filters', function(done) {
+    var before = false
+      , after = false;
+
+    define('Filter', User)
+      .extend('User')
+      .before(function(next) {
+        before = true;
+        next();
+      })
+      .after(function(next) {
+        after = true;
+        next();
+      })
+      .set('admin', true)
+
+      factory('Filter', function() {
+        before.should.be.true;
+        after.should.be.true;
+        done();
+      });
+  });
+
   it('can create multiple factories at once', function (done) {
     list('User', 10, function (users) {
       users.length.should.eq(10);
