@@ -1,61 +1,12 @@
-/*!
- * Seed Forge - factories for Seed.
- *
- * Veselin Todorov <hi@vesln.com>
- * MIT License
- */
-
-/**
- * With `list` one can create multiple
- * factories at once.
- *
- * @type {Function}
- */
-var list = require('../').list;
-
-/**
- * With `define` one can define a factory and
- * rules for it.
- *
- * @type {Function}
- */
-var define = require('../').define;
-
-/**
- * `build` builds a valid model object, but not
- * persisted yet.
- *
- * @type {function}
- */
-var build = require('../').build;
-
-/**
- * The factory creator.
- *
- * @type {function}
- */
-var factory = require('../').factory;
-
-/**
- * Factory attributes reader.
- *
- * @type {function}
- */
-var attributes = require('../').attributes;
-
-/**
- * Invalid model.
- *
- * @type {Function}
- */
 var Invalid = require('./support/models').Invalid;
-
-/**
- * Example User model.
- *
- * @type {Function}
- */
 var User = require('./support/models').User;
+
+var forge = require('../');
+var list = forge.list;
+var define = forge.define;
+var build = forge.build;
+var factory = forge.factory;
+var attributes = forge.attributes;
 
 define(User)
   .set('name', 'Name')
@@ -76,15 +27,15 @@ define('Admin', User)
 
 define(Invalid);
 
-describe('Seed Forge', function () {
-  describe('overriding default attributes', function () {
-    it('can be done when building', function () {
+describe('Seed Forge', function() {
+  describe('overriding default attributes', function() {
+    it('can be done when building', function() {
       var user = build('User', { age: 44 });
       user.get('age').should.eq(44);
     });
 
-    it('can be done when creating', function (done) {
-      factory('User', { age: 44 }, function (user) {
+    it('can be done when creating', function(done) {
+      factory('User', { age: 44 }, function(user) {
         user.fetch(function () {
           user.get('age').should.eq(44);
           done();
@@ -94,9 +45,9 @@ describe('Seed Forge', function () {
   });
 
   describe('creating a factory', function() {
-    it('can save the factory', function (done) {
-      factory('User', function (user) {
-        user.fetch(function () {
+    it('can save the factory', function(done) {
+      factory('User', function(user) {
+        user.fetch(function() {
           user.get('_id').should.be.not.null;
           user.get('eyes').should.eql({ left: 'blue', right: 'green' });
           user.get('name').should.eq('Name');
@@ -109,7 +60,7 @@ describe('Seed Forge', function () {
     });
 
     it('throws an exception if one occures by saving', function() {
-      var fn = function () {
+      var fn = function() {
         factory('Invalid', function (invalid) {});
       };
 
@@ -117,14 +68,14 @@ describe('Seed Forge', function () {
     });
   });
 
-  it('can return valid object, but not persisted', function () {
+  it('can return valid object, but not persisted', function() {
     var user = build('User');
 
     user.get('name').should.eq('Name');
     user.get('age').should.eq(33);
   });
 
-  it('can return valid attributes', function () {
+  it('can return valid attributes', function() {
     var attrs = attributes('User');
 
     attrs.name.should.eq('Name');
@@ -133,7 +84,7 @@ describe('Seed Forge', function () {
     attrs.eyes.should.eql({ left: 'blue', right: 'green' });
   });
 
-  it('can handle sequences', function () {
+  it('can handle sequences', function() {
     var first = attributes('User')
     , second = attributes('User')
     , regexp = /example[0-9]+@example.com/;
@@ -144,7 +95,7 @@ describe('Seed Forge', function () {
   second.email.should.match(regexp);
   });
 
-  it('supports inheritance', function () {
+  it('supports inheritance', function() {
     var user = build('User');
     var admin = build('Admin');
 
@@ -181,11 +132,11 @@ describe('Seed Forge', function () {
       });
   });
 
-  it('can create multiple factories at once', function (done) {
-    list('User', 10, function (users) {
+  it('can create multiple factories at once', function(done) {
+    list('User', 10, function(users) {
       users.length.should.eq(10);
 
-      users.map(function (user) {
+      users.map(function(user) {
         user.get('_id').should.be.ok;
       });
 
