@@ -35,7 +35,7 @@ describe('Seed Forge', function() {
     });
 
     it('can be done when creating', function(done) {
-      factory('User', { age: 44 }, function(user) {
+      factory('User', { age: 44 }, function(err, user) {
         user.fetch(function () {
           user.get('age').should.eq(44);
           done();
@@ -46,7 +46,7 @@ describe('Seed Forge', function() {
 
   describe('creating a factory', function() {
     it('can save the factory', function(done) {
-      factory('User', function(user) {
+      factory('User', function(err, user) {
         user.fetch(function() {
           user.get('_id').should.be.not.null;
           user.get('eyes').should.eql({ left: 'blue', right: 'green' });
@@ -59,9 +59,11 @@ describe('Seed Forge', function() {
       });
     });
 
-    it('throws an exception if one occures by saving', function() {
+    it('returns an error if there is one', function() {
       var fn = function() {
-        factory('Invalid', function (invalid) {});
+        factory('Invalid', function(err, invalid) {
+          if (err) throw err;
+        });
       };
 
       fn.should.throw();
@@ -133,7 +135,7 @@ describe('Seed Forge', function() {
   });
 
   it('can create multiple factories at once', function(done) {
-    list('User', 10, function(users) {
+    list('User', 10, function(err, users) {
       users.length.should.eq(10);
 
       users.map(function(user) {
