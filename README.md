@@ -2,10 +2,8 @@
 
 # Seed Forge
 
-Seed Forge is a powerful factory builder for [Seed](https://github.com/qualiancy/seed).
-
-Seed is a storage-agnostic graphing database framework that provides a common API for working
-with JSON-style documents.
+Seed Forge is a powerful factory builder for [Seed](https://github.com/qualiancy/seed) and
+[Mongoose](http://mongoosejs.com)
 
 ## Synopsis
 

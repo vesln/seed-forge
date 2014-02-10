@@ -1,12 +1,13 @@
 {
   "name": "seed-forge",
   "homepage": "https://github.com/vesln/seed-forge",
-  "description": "Factories for Seed",
+  "description": "Factory builder for Seed & Mongoose",
   "keywords": [
     "factories",
     "fixtures",
     "factory",
     "fixture",
+    "mongoose",
     "seed"
   ],
   "author": {
