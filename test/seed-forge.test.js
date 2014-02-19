@@ -87,14 +87,12 @@ describe('Seed Forge', function() {
   });
 
   it('can handle sequences', function() {
-    var first = attributes('User')
-    , second = attributes('User')
-    , regexp = /example[0-9]+@example.com/;
-
-  first.email.should.not.eq(second.email);
-
-  first.email.should.match(regexp);
-  second.email.should.match(regexp);
+    var first = attributes('User');
+    var second = attributes('User');
+    var regexp = /example[0-9]+@example.com/;
+    first.email.should.not.eq(second.email);
+    first.email.should.match(regexp);
+    second.email.should.match(regexp);
   });
 
   it('supports inheritance', function() {
@@ -111,27 +109,63 @@ describe('Seed Forge', function() {
     user.get('email').should.not.eq(admin.get('emai'));
   });
 
-  it('supports before and after filters', function(done) {
-    var before = false
-      , after = false;
+  describe('hooks', function() {
+    it('supports before and after hooks', function(done) {
+      var prebuild = false;
+      var presave = false;
+      var postsave = false;
 
-    define('Filter', User)
-      .extend('User')
-      .before(function(next) {
-        before = true;
-        next();
-      })
-      .after(function(next) {
-        after = true;
-        next();
-      })
-      .set('admin', true)
+      define('Filter', User)
+        .extend('User')
+        .set('admin', true)
+        .hook('pre:build', function(next) {
+          setImmediate(function() {
+            prebuild = true;
+            next.should.be.a('function');
+            next();
+          });
+        })
+        .hook('pre:save', function(obj, next) {
+          setImmediate(function() {
+            presave = true;
+            obj.should.be.instanceof(User);
+            next.should.be.a('function');
+            next();
+          });
+        })
+        .hook('post:save', function(obj, next) {
+          setImmediate(function() {
+            postsave = true;
+            obj.should.be.instanceof(User);
+            next.should.be.a('function');
+            next();
+          });
+        });
 
       factory('Filter', function() {
-        before.should.be.true;
-        after.should.be.true;
+        prebuild.should.be.true;
+        presave.should.be.true;
+        postsave.should.be.true;
         done();
       });
+    });
+
+    it('escalates hook errors', function(done) {
+      define('Err', User)
+        .extend('User')
+        .hook('pre:build', function(next) {
+          setImmediate(function() {
+            next(new Error('oops'));
+          });
+        });
+
+      factory('Err', function(err) {
+        should.exist(err);
+        err.should.be.instanceof(Error);
+        err.should.have.property('message', 'oops');
+        done();
+      });
+    });
   });
 
   it('can create multiple factories at once', function(done) {

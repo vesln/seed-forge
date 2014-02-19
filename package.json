@@ -30,7 +30,8 @@
   "dependencies": {
     "super": "0.2.x",
     "filtr": "0.3.x",
-    "cyclop": "~0.1.0"
+    "cyclop": "~0.1.0",
+    "evts": "~0.1.0"
   },
   "devDependencies": {
     "chai": "*",
