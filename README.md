@@ -63,6 +63,23 @@ var user = build('User');
 var user = build('User', { override: 'attributes' });
 ```
 
+### Use hooks for creating relationships
+
+```js
+define('Account', Account)
+  .hook('pre:save', function(obj, next) {
+    if (!obj.get('owner')) { // if (!obj.owner) {
+      factory('User', function(err, user) {
+        if (err) return next(err);
+        obj.set('owner', user);
+        next();
+      });
+    } else {
+      next();
+    }
+  })
+```
+
 ### Get model attributes from a factory
 
 ```js
