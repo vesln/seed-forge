@@ -1,4 +1,10 @@
 
+1.0.0 / 2014-02-19
+==================
+
+  * Implement async hooks for factory. Closes #1
+  * Clarify that it works with Mongoose too
+
 0.2.0 / 2014-02-04
 ==================
 
