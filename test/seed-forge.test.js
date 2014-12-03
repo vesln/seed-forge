@@ -1,3 +1,5 @@
+var expect = chai.expect;
+
 var Invalid = require('./support/models').Invalid;
 var User = require('./support/models').User;
 
@@ -19,11 +21,16 @@ define(User)
     return 'example' + n + '@example.com'
   })
   .set('age', 33)
-  .set('admin', false);
+  .set('admin', false)
+  .set('disabled', false);
 
 define('Admin', User)
   .extend('User')
   .set('admin', true)
+
+define('DisabledAdmin', User)
+  .extend('Admin')
+  .set('disabled', true)
 
 define(Invalid);
 
@@ -98,13 +105,24 @@ describe('Seed Forge', function() {
   it('supports inheritance', function() {
     var user = build('User');
     var admin = build('Admin');
+    var disabledAdmin = build('DisabledAdmin')
 
     user.get('eyes').should.eql(admin.get('eyes'));
+    expect(admin.get('eyes')).to.eql(disabledAdmin.get('eyes'));
+
     user.get('name').should.eq(admin.get('name'));
+    expect(admin.get('name')).to.eq(disabledAdmin.get('name'));
+
     user.get('age').should.eq(admin.get('age'));
+    expect(admin.get('age')).to.eq(disabledAdmin.get('age'));
 
     user.get('admin').should.eq(false);
     admin.get('admin').should.eq(true);
+    expect(disabledAdmin.get('admin')).to.eq(true);
+
+    expect(user.get('disabled')).to.eq(false);
+    expect(admin.get('disabled')).to.eq(false);
+    expect(disabledAdmin.get('disabled')).to.eq(true);
 
     user.get('email').should.not.eq(admin.get('emai'));
   });
