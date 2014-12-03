@@ -168,6 +168,39 @@ describe('Seed Forge', function() {
       });
     });
 
+    it('inherits hooks', function(done) {
+      var parentHook = false
+        , childHook = false;
+
+      define('Parent', User).extend('User')
+        .hook('pre:build', function(next) {
+          setImmediate(function() {
+            expect(childHook, 'child hook should not have been called at this point').to.be.false;
+            next.should.be.a('function');
+
+            parentHook = true;
+            next();
+          });
+        });
+
+      define('Child', User).extend('Parent')
+        .hook('pre:build', function(next) {
+          setImmediate(function() {
+            expect(parentHook, 'parent hook should have been called at this point').to.be.true;
+            next.should.be.a('function');
+
+            childHook = true;
+            next();
+          });
+        });
+
+      factory('Child', function() {
+        expect(parentHook, 'parent hook should have been called').to.be.true;
+        expect(childHook, 'child hook should have been called').to.be.true;
+        done();
+      });
+    });
+
     it('escalates hook errors', function(done) {
       define('Err', User)
         .extend('User')
