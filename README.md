@@ -41,6 +41,11 @@ define('Admin', User)
   .extend('User')
   .set('age', 44)
   .set('admin', true)
+  .set('disabled', false);
+
+define('DisabledAdmin', User)
+  .extend('Admin')
+  .set('disabled', true);
 ```
 
 ### Create a record from factory
